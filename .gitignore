@@ -1,0 +1,6 @@
+.idea
+*.swp
+.parcel-*
+node_modules
+dist
+console*

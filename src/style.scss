@@ -1,0 +1,47 @@
+$backgroundColor: black;
+$color: lightgray;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+
+#console {
+  background-color: $backgroundColor;
+  border: 1px solid white;
+  border-radius: 10px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 3em;
+  left: 3em;
+  bottom: 3em;
+  right: 3em;
+  align-items: stretch;
+  color: $color;
+  padding: 7px 13px;
+
+  &>div:last-child {
+    display: flex;
+    &:before {
+      content: "> ";
+    }
+    & input {
+      background-color: transparent;
+      outline: none;
+      border: none;
+      color: white;
+      flex: 1;
+    }
+  }
+
+  #history .cmd:before {
+    content: "> ";
+    font-weight: bold;
+  }
+}

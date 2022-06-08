@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Rosetta Interview: VirtualConsole</title>
+    <style >
+        /*@import "./src/style.scss";*/
+    </style>
+    <script type="module">
+        // import "./src/index"
+        import { TTY } from "./src/tty";
+
+        window.addEventListener('load', function onload() {
+            window.removeEventListener('load', onload);
+            const tty =new TTY({ls: ()=> new Promise(resolve=> setTimeout(()=>resolve(0), 3000))});
+            tty.render(document.getElementById('console'));
+        })
+    </script>
+</head>
+<body>
+<div id="console" style="height: 80vh">
+    <div id="history"></div>
+    <div><input id="input"/></div>
+</div>
+</body>
+</html>

@@ -77,6 +77,8 @@ export class TTY implements Terminal {
   }
 
   render(container: HTMLDivElement) {
+    GlobalStyles();
+
     if (this.output?.parentElement instanceof HTMLElement) {
       this.output.parentElement.className = this.output.parentElement.className
         .split(/\s+/g)
@@ -115,62 +117,6 @@ export class TTY implements Terminal {
       this.style.id = this.id;
       document.head.append(this.style);
       this.dirty();
-    }
-
-    if (!document.getElementById(TTY.ID)) {
-      const style = document.createElement("style");
-      style.id = TTY.ID;
-      style.innerHTML = `
-      .tty {
-        border: 1px solid white;
-        border-radius: 10px;
-        overflow-y: scroll;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        color: lightgrey;
-        padding: 7px 13px;
-        font-size: 1em;
-        line-height: 1.3em;
-        background-color: black;
-      }
-      .tty>div {
-        background-color: black;
-      }
-      .tty>div[contentEditable] {
-        outline: none;
-        position: relative;
-        padding-left: 1em;
-      }
-      .tty>div[contentEditable]:before {
-        content: "> ";
-        position: absolute;
-        left: 0;
-        top: 0;
-      }
-      .tty>div[contentEditable]:after {
-        content: attr(data-auto);
-        position: absolute;
-        left: 1em;
-        bottom: -1em;
-      }
-      .tty>div>.cmd {
-        display: block;
-      }
-      .tty>div>.cmd:before {
-        content: "> "
-      }
-      ${["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"]
-        .map((color, index) => `.tty span.c3${index} { color: ${color}; }`)
-        .join("\n")}
-      ${["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"]
-        .map(
-          (color, index) =>
-            `.tty span.c4${index} { background-color: ${color}; }`
-        )
-        .join("\n")}
-      `.replace(/\n\s+/g, "");
-      document.head.append(style);
     }
   }
 
@@ -310,5 +256,66 @@ function escape(color): string {
     return "</span>";
   } else {
     return `<span class="c${code}">`;
+  }
+}
+
+function GlobalStyles() {
+  const css = `
+      .tty {
+        border: 1px solid white;
+        border-radius: 10px;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        color: lightgrey;
+        padding: 7px 13px;
+        font-family: monospace;
+        font-size: 1em;
+        line-height: 1.3em;
+        background-color: black;
+      }
+      .tty>div {
+        background-color: black;
+      }
+      .tty>div[contentEditable] {
+        outline: none;
+        position: relative;
+        padding-left: 1em;
+      }
+      .tty>div[contentEditable]:before {
+        content: "> ";
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .tty>div[contentEditable]:after {
+        content: attr(data-auto);
+        position: absolute;
+        left: 1em;
+        bottom: -1em;
+      }
+      .tty>div>.cmd {
+        display: block;
+      }
+      .tty>div>.cmd:before {
+        content: "> "
+      }
+      ${["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"]
+        .map((color, index) => `.tty span.c3${index} { color: ${color}; }`)
+        .join("\n")}
+      ${["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"]
+        .map(
+          (color, index) =>
+            `.tty span.c4${index} { background-color: ${color}; }`
+        )
+        .join("\n")}
+      `.replace(/\n\s*/g, "");
+
+  if (!document.getElementById(TTY.ID)) {
+    const style = document.createElement("style");
+    style.id = TTY.ID;
+    style.innerHTML = css;
+    document.head.append(style);
   }
 }
